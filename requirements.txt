@@ -1,0 +1,3 @@
+Pillow>=10       # EXIF dates from photos
+pillow-heif>=0.16  # HEIC/HEIF photos (Samsung and iPhone default)
+hachoir>=3.3     # creation dates from videos

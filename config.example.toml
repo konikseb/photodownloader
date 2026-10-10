@@ -1,0 +1,38 @@
+# Copy this file to config.toml and edit it.
+# Paths: use single quotes so backslashes are taken literally. Relative paths are relative to this file.
+
+[library]
+# Where the combined, date-sorted library goes. Prefer a UNC path over a mapped drive letter:
+# scheduled tasks often can't see mapped drives.
+path = '\\NAS\photo\Library'
+# Folder for each photo, from the date it was taken (strftime codes). '%Y/%m' -> 2023/05
+folder_pattern = '%Y/%m'
+
+[app]
+state_dir = 'state'       # index database and logs; keep it on a local disk, not the NAS
+staging_dir = 'staging'   # temporary downloads, emptied after every batch
+rclone = 'rclone'         # or a full path such as 'C:\Tools\rclone\rclone.exe'
+batch_size = 200          # files downloaded per batch; caps how much staging space is used
+# extensions = ['jpg', 'heic', 'mp4']   # uncomment to override the default photo + video list
+
+# --- Sources ---------------------------------------------------------------
+# type = 'rclone': a remote created with `rclone config` (see README). Add a folder after the
+#                  colon to limit the scan, e.g. 'gdrive:Photos'.
+# type = 'folder': any folder this PC can read: a Google Takeout export, a phone backup copied
+#                  over USB, an old external disk. Files there are only read, never moved.
+
+[[source]]
+name = 'google-drive'
+type = 'rclone'
+remote = 'gdrive:'
+
+[[source]]
+name = 'onedrive'          # Samsung Gallery's cloud sync also lands in OneDrive
+type = 'rclone'
+remote = 'onedrive:'
+
+[[source]]
+name = 'phone-copy'
+type = 'folder'
+path = 'D:\PhoneBackup'
+enabled = false            # run it anyway with: python -m photosync run --source phone-copy
